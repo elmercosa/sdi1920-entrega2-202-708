@@ -6,26 +6,28 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/usuarios/lista?mensaje=No puede enviar una peticion de amistad a sí mismo&tipoMensaje=alert-danger ");
         } else {
             comprobarPeticionAmistad(res, req, req.session.usuario, friendEmail, function (from, to) {
-                let busqueda = {email: from};
-                gestorBD.obtenerUsuarios(busqueda, function (usuarios) {
-                    if (usuarios == null || usuarios.length == 0) {
-                        res.redirect("/usuarios/lista?Se ha producido un error. Por favor intentelo de nuevo mas tarde&tipoMensaje=alert-danger ");
-                    } else {
-                        let peticion = {
-                            to: to,
-                            from_name: usuarios[0].name,
-                            from_surname: usuarios[0].surname,
-                            from: usuarios[0].email,
-                        };
+                comprobarAmistad(res, req, from, to, function (from, to) {
+                    let busqueda = {email: from};
+                    gestorBD.obtenerUsuarios(busqueda, function (usuarios) {
+                        if (usuarios == null || usuarios.length == 0) {
+                            res.redirect("/usuarios/lista?Se ha producido un error. Por favor intentelo de nuevo mas tarde&tipoMensaje=alert-danger ");
+                        } else {
+                            let peticion = {
+                                to: to,
+                                from_name: usuarios[0].name,
+                                from_surname: usuarios[0].surname,
+                                from: usuarios[0].email,
+                            };
 
-                        gestorBD.insertarPeticionAmistad(peticion, function (id) {
-                            if (id == null) {
-                                res.redirect("/usuarios/lista?mensaje=Error al registrar usuario&tipoMensaje=alert-danger");
-                            } else {
-                                res.redirect("/usuarios/lista?mensaje=Peticion enviada");
-                            }
-                        });
-                    }
+                            gestorBD.insertarPeticionAmistad(peticion, function (id) {
+                                if (id == null) {
+                                    res.redirect("/usuarios/lista?mensaje=Error al registrar usuario&tipoMensaje=alert-danger");
+                                } else {
+                                    res.redirect("/usuarios/lista?mensaje=Peticion enviada");
+                                }
+                            });
+                        }
+                    });
                 });
             });
         }
@@ -175,6 +177,18 @@ module.exports = function (app, swig, gestorBD) {
                 callback(from, to);
             } else {
                 res.redirect("/usuarios/lista?mensaje=Ya ha enviado una peticion de amistad a este usuario");
+            }
+        });
+    }
+
+    function comprobarAmistad(res, req, from, to, callback) {
+        let criterio = {$or: [{amigo1: from,amigo2: to}, {amigo1: to, amigo2: from}]};
+
+        gestorBD.obtenerAmigos(criterio, function (usuarios) {
+            if (usuarios == null || usuarios.length === 0) {
+                callback(from, to);
+            } else {
+                res.redirect("/usuarios/lista?mensaje=Ya eres amigo de este usuario&tipoMensaje=alert-danger ");
             }
         });
     }
