@@ -28,7 +28,7 @@ module.exports = function (app, swig, gestorBD) {
                 }
                 let respuesta = swig.renderFile('views/buserlist.html',
                     {
-                        logged: req.session.usuario != null,
+                        logged: req.session.usuario,
                         usuarios: usuarios,
                         paginas: paginas,
                         actual: pg

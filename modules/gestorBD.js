@@ -214,6 +214,61 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+    insertarPeticionAmistad: function (peticion, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('peticionesamistad');
+                collection.insert(peticion, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+    obtenerPeticionAmistad: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('peticionesamistad');
+                collection.find(criterio).toArray(function (err, usuarios) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(usuarios);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+    obtenerPeticionAmistadPg: function (criterio, pg, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('peticionesamistad');
+                collection.count(function (err, count) {
+                    collection.find(criterio).skip((pg - 1) * 5).limit(5)
+                        .toArray(function (err, peticiones) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                funcionCallback(peticiones, count);
+                            }
+                            db.close();
+                        });
+                });
+            }
+        });
+    },
 
 };

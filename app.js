@@ -97,6 +97,8 @@ app.use("/canciones/agregar", routerUsuarioSession);
 app.use("/publicaciones", routerUsuarioSession);
 app.use("/cancion/comprar", routerUsuarioSession);
 app.use("/compras", routerUsuarioSession);
+app.use("/amigo/*", routerUsuarioSession);
+app.use("/usuarios/lista", routerUsuarioSession);
 
 //routerUsuarioAutor
 let routerUsuarioAutor = express.Router();
@@ -161,11 +163,13 @@ app.set('clave', 'abcdefg');
 app.set('crypto', crypto);
 
 require("./routes/rusuarios.js")(app, swig, gestorBD);
+require("./routes/ramigos.js")(app,swig, gestorBD);
 require("./routes/rhome.js")(app, swig, gestorBD);
 require("./routes/rcanciones.js")(app, swig, gestorBD);
 require("./routes/rautores.js")(app, swig);
 require("./routes/rcomentarios.js")(app, swig, gestorBD);
-require("./routes/rapicanciones.js")(app, gestorBD);
+require("./routes/rapicanciones.js")(app,swig, gestorBD);
+
 
 app.get('/', function (req, res) {
     res.redirect('/tienda');

@@ -28,12 +28,15 @@
                 <li id="mTienda" class="active"><a href="/tienda">Tienda</a></li>
                 <li id="mPublicaciones"><a href="/publicaciones">Publicaciones</a></li>
                 <li id="mCompras"><a href="/compras">Compras</a></li>
+                {% if logged != null %}
                 <li id="usuarios_lista"><a href="/usuarios/lista">Ver usuarios</a></li>
+                <li id="peticiones_amigos_lista"><a href="/amigo/peticiones/lista">Ver peticiones de amistad</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
                 <li><a href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
-                {% if logged == true %}
+                {% if logged != null %}
                 <li id="log_out"><a href="/desconectarse"><span class="glyphicon glyphicon-log-out"></span>Desconectarse</a>
                 </li>
                 {% endif %}
