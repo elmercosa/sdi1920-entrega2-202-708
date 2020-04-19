@@ -7,23 +7,16 @@ module.exports = function (app, swig, gestorBD) {
         } else {
             comprobarPeticionAmistad(res, req, req.session.usuario, friendEmail, function (from, to) {
                 comprobarAmistad(res, req, from, to, function (from, to) {
-                    let busqueda = {email: from};
-                    gestorBD.obtenerUsuarios(busqueda, function (usuarios) {
-                        if (usuarios == null || usuarios.length == 0) {
-                            res.redirect("/usuarios/lista?Se ha producido un error. Por favor intentelo de nuevo mas tarde&tipoMensaje=alert-danger ");
-                        } else {
-                            let peticion = {
-                                to: to,
-                                from: usuarios[0].email,
-                            };
+                    let peticion = {
+                        to: to,
+                        from: from,
+                    };
 
-                            gestorBD.insertarPeticionAmistad(peticion, function (id) {
-                                if (id == null) {
-                                    res.redirect("/usuarios/lista?mensaje=Error al registrar usuario&tipoMensaje=alert-danger");
-                                } else {
-                                    res.redirect("/usuarios/lista?mensaje=Peticion enviada");
-                                }
-                            });
+                    gestorBD.insertarPeticionAmistad(peticion, function (id) {
+                        if (id == null) {
+                            res.redirect("/usuarios/lista?mensaje=Error al registrar usuario&tipoMensaje=alert-danger");
+                        } else {
+                            res.redirect("/usuarios/lista?mensaje=Peticion enviada");
                         }
                     });
                 });
@@ -57,7 +50,7 @@ module.exports = function (app, swig, gestorBD) {
                 }
                 let amigosLista = [];
                 for (let i = 0; i < peticiones.length; i++) {
-                    amigosLista.push(peticiones[i])
+                    amigosLista.push(peticiones[i].from)
                 }
 
                 let criterioBusqueda = {email: {$in: amigosLista}};
@@ -100,7 +93,7 @@ module.exports = function (app, swig, gestorBD) {
                 if (id == null) {
                     res.redirect("/amigo/peticiones/lista?mensaje=Se ha producido un error&tipoMensaje=alert-danger ");
                 } else {
-                    res.redirect("/amigo/peticiones/lista?mensaje=Se ha aceptado la peticion&tipoMensaje=alert-danger ");
+                    res.redirect("/amigo/peticiones/lista?mensaje=Se ha aceptado la peticion");
                 }
             });
         })
