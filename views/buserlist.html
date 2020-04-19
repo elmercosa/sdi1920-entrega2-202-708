@@ -29,6 +29,7 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Email</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -37,6 +38,11 @@
             <td>{{ usuario.name }}</td>
             <td>{{ usuario.surname }}</td>
             <td>{{ usuario.email }}</td>
+            <td>
+                {% if usuario.email != logged %}
+                <a href="/amigo/agregar/{{ usuario._id.toString() }}">agregar amigo</a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
         </tbody>
