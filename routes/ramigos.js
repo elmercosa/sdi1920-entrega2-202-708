@@ -14,8 +14,6 @@ module.exports = function (app, swig, gestorBD) {
                         } else {
                             let peticion = {
                                 to: to,
-                                from_name: usuarios[0].name,
-                                from_surname: usuarios[0].surname,
                                 from: usuarios[0].email,
                             };
 
