@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block titulo %} Peticiones de amistad {% endblock %}
+{% block titulo %} Lista de usuarios {% endblock %}
 {% block contenido_principal %}
 
-<h1>Lista de peticiones de amistad</h1>
+<h1>Lista de usuarios</h1>
 
 <div class="table-responsive">
     <table class="table table-hover">
@@ -10,7 +10,7 @@
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th></th>
+            <th>Email</th>
         </tr>
         </thead>
         <tbody>
@@ -18,9 +18,7 @@
         <tr>
             <td>{{ usuario.name }}</td>
             <td>{{ usuario.surname }}</td>
-            <td>
-                <a href="/amigo/aceptar/{{ usuario.from.toString() }}">aceptar</a>
-            </td>
+            <td>{{ usuario.email }}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -32,7 +30,7 @@
     <ul class="pagination">
         {% for pagina in paginas %}
         <li class="page-item" id="pi-{{pagina}}">
-            <a class="page-link" href="/amigo/peticiones/lista?pg={{pagina}}">{{pagina}}</a>
+            <a class="page-link" href="/amigo/lista?pg={{pagina}}">{{pagina}}</a>
         </li>
         {% endfor %}
         <script>

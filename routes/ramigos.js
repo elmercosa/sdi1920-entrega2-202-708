@@ -1,16 +1,15 @@
 module.exports = function (app, swig, gestorBD) {
 
     app.get("/amigo/agregar/:id", function (req, res) {
-
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-
-        comprobarMismoUsuario(res, req, criterio, function (friendEmail) {
+        let friendEmail = req.params.id;
+        if (friendEmail === req.session.usuario) {
+            res.redirect("/usuarios/lista?mensaje=No puede enviar una peticion de amistad a sí mismo&tipoMensaje=alert-danger ");
+        } else {
             comprobarPeticionAmistad(res, req, req.session.usuario, friendEmail, function (from, to) {
-                let busqueda = {email: from}
+                let busqueda = {email: from};
                 gestorBD.obtenerUsuarios(busqueda, function (usuarios) {
                     if (usuarios == null || usuarios.length == 0) {
-                        req.session.usuario = null;
-                        res.redirect("/usuarios/lista?mensaje=El usuario no existe&tipoMensaje=alert-danger ");
+                        res.redirect("/usuarios/lista?Se ha producido un error. Por favor intentelo de nuevo mas tarde&tipoMensaje=alert-danger ");
                     } else {
                         let peticion = {
                             to: to,
@@ -29,8 +28,9 @@ module.exports = function (app, swig, gestorBD) {
                     }
                 });
             });
-        })
+        }
     });
+
 
     app.get("/amigo/peticiones/lista", function (req, res) {
 
@@ -55,50 +55,148 @@ module.exports = function (app, swig, gestorBD) {
                         paginas.push(i);
                     }
                 }
-                let respuesta = swig.renderFile('views/bfriendrequestlist.html',
-                    {
-                        logged: req.session.usuario,
-                        usuarios: peticiones,
-                        paginas: paginas,
-                        actual: pg
+                let amigosLista = [];
+                for (let i = 0; i < peticiones.length; i++) {
+                    amigosLista.push(peticiones[i])
+                }
+
+                let criterioBusqueda = {email: {$in: amigosLista}};
+
+                if(amigosLista.length === 0){
+                    let respuesta = swig.renderFile('views/bfriendrequestlist.html',
+                        {
+                            logged: req.session.usuario,
+                            usuarios: [],
+                            paginas: paginas,
+                            actual: pg
+                        });
+                    res.send(respuesta);
+                }else{
+                    infoUsuario(res, req, criterioBusqueda, function (usuarios) {
+                        let respuesta = swig.renderFile('views/bfriendrequestlist.html',
+                            {
+                                logged: req.session.usuario,
+                                usuarios: usuarios,
+                                paginas: paginas,
+                                actual: pg
+                            });
+                        res.send(respuesta);
                     });
-                res.send(respuesta);
+                }
             }
         });
 
     });
 
     app.get("/amigo/aceptar/:id", function (req, res) {
-        console.log(req.params.id)
+        let peticion = {to: req.session.usuario, from: req.params.id};
+        eliminarPeticion(res, req, peticion, function (criterio) {
+            let amistad = {
+                amigo1: criterio.to,
+                amigo2: criterio.from
+            };
+
+            gestorBD.insertarAmigos(amistad, function (id) {
+                if (id == null) {
+                    res.redirect("/amigo/peticiones/lista?mensaje=Se ha producido un error&tipoMensaje=alert-danger ");
+                } else {
+                    res.redirect("/amigo/peticiones/lista?mensaje=Se ha aceptado la peticion&tipoMensaje=alert-danger ");
+                }
+            });
+        })
     });
 
+    app.get("/amigo/lista/", function (req, res) {
 
+        let usuario_actual = req.session.usuario;
+        let criterio = {$or: [{amigo1: usuario_actual}, {amigo2: usuario_actual}]};
 
-    function comprobarMismoUsuario(res, req, criterio, callback) {
-        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                req.session.usuario = null;
-                res.redirect("/usuarios/lista?mensaje=El usuario no existe&tipoMensaje=alert-danger ");
+        let pg = parseInt(req.query.pg); // Es String !!!
+        if (req.query.pg == null) { // Puede no venir el param
+            pg = 1;
+        }
+
+        gestorBD.obtenerAmigosPg(criterio, pg, function (amigos, total) {
+            if (amigos == null) {
+                res.send("Error al listar ");
             } else {
-                if (usuarios[0].email === req.session.usuario) {
-                    res.redirect("/usuarios/lista?mensaje=No puede enviar una peticion de amistad a sí mismo&tipoMensaje=alert-danger ");
-                } else {
-                    callback(usuarios[0].email);
+                let ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
+                    ultimaPg = ultimaPg + 1;
+                }
+                let paginas = []; // paginas mostrar
+                for (let i = pg - 2; i <= pg + 2; i++) {
+                    if (i > 0 && i <= ultimaPg) {
+                        paginas.push(i);
+                    }
+                }
+                let amigosLista = [];
+                for (let i = 0; i < amigos.length; i++) {
+                    if (amigos[i].amigo1 === usuario_actual) {
+                        amigosLista.push(amigos[i].amigo2)
+                    }
+                    if (amigos[i].amigo2 === usuario_actual) {
+                        amigosLista.push(amigos[i].amigo1)
+                    }
+                }
+
+                let criterio = {email: {$in: amigosLista}};
+
+                if(amigosLista.length === 0){
+                    let respuesta = swig.renderFile('views/bamigoslista.html',
+                        {
+                            logged: req.session.usuario,
+                            usuarios: [],
+                            paginas: paginas,
+                            actual: pg
+                        });
+                    res.send(respuesta);
+                }else{
+                    infoUsuario(res, req, criterio, function (usuarios) {
+                        let respuesta = swig.renderFile('views/bamigoslista.html',
+                            {
+                                logged: req.session.usuario,
+                                usuarios: usuarios,
+                                paginas: paginas,
+                                actual: pg
+                            });
+                        res.send(respuesta);
+                    });
                 }
             }
         });
-    }
+    });
 
     function comprobarPeticionAmistad(res, req, from, to, callback) {
         let criterio = {to: to, from: from};
-        // let criterio = { $or: [{to: to, from: from}, {to: from, from: to} ] };
 
         gestorBD.obtenerPeticionAmistad(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
+            if (usuarios == null || usuarios.length === 0) {
                 callback(from, to);
             } else {
-                res.redirect("/usuarios/lista?mensaje=Ya ha enviado una peticion de amistad a este usuario&tipoMensaje=alert-danger ");
+                res.redirect("/usuarios/lista?mensaje=Ya ha enviado una peticion de amistad a este usuario");
             }
         });
     }
+
+    function eliminarPeticion(res, req, criterio, callback) {
+        gestorBD.eliminarPeticionAmistad(criterio, function (peticiones) {
+            if (peticiones == null) {
+                res.redirect("/amigo/peticiones/lista?mensaje=Ya ha enviado una peticion de amistad a este usuario&tipoMensaje=alert-danger ");
+            } else {
+                callback(criterio);
+            }
+        });
+    }
+
+    function infoUsuario(res, req, criterio, callback) {
+        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+            if (usuarios == null || usuarios.length === 0) {
+                res.redirect("/amigo/peticiones/lista?mensaje=Ha ocurrido un error&tipoMensaje=alert-danger ");
+            } else {
+                callback(usuarios)
+            }
+        });
+    }
+
 };

@@ -40,7 +40,7 @@
             <td>{{ usuario.email }}</td>
             <td>
                 {% if usuario.email != logged %}
-                <a href="/amigo/agregar/{{ usuario._id.toString() }}">agregar amigo</a>
+                <a href="/amigo/agregar/{{ usuario.email.toString() }}">agregar amigo</a>
                 {% endif %}
             </td>
         </tr>
