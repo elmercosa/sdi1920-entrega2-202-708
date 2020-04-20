@@ -43,6 +43,50 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.put("/api/amigos/leermensaje/:id", function (req, res) {
+
+        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+
+        let mensaje = {leido: true};
+
+        comprobarRepector(res, req, criterio, function () {
+            gestorBD.modificarMensaje(criterio, mensaje, function (result) {
+                if (result == null) {
+                    res.status(500);
+                    res.json({
+                        error: "se ha producido un error"
+                    })
+                } else {
+                    res.status(200);
+                    res.json({
+                        mensaje: "mensaje leido",
+                        _id: req.params.id
+                    })
+                }
+            });
+        })
+    });
+    
+    function comprobarRepector(res, req, mensajeId, callback) {
+        gestorBD.obtenerMensaje(mensajeId, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                res.json({
+                    error: "No hay mensajes"
+                })
+            } else {
+                if(mensajes[0].destino !== res.usuario){
+                    res.status(500);
+                    res.json({
+                        error: "No eres el receptor del mensaje"
+                    })
+                }else{
+                    callback();
+                }
+            }
+        });
+    }
+
     app.post("/api/amigos/nuevomensaje", function (req, res) {
         var mensaje = {
             emisor: res.usuario,
