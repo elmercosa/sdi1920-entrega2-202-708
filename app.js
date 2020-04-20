@@ -75,7 +75,7 @@ routerUsuarioToken.use(function (req, res, next) {
 });
 
 // Aplicar routerUsuarioToken
-app.use('/api/cancion', routerUsuarioToken);
+app.use('/api/amigos/*', routerUsuarioToken);
 
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
@@ -107,7 +107,7 @@ app.set('crypto', crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD);
 require("./routes/rhome.js")(app, swig, gestorBD);
 require("./routes/ramigos.js")(app, swig, gestorBD);
-require("./routes/rapicanciones.js")(app,swig, gestorBD);
+require("./routes/rapi.js")(app, gestorBD);
 
 
 app.get('/', function (req, res) {

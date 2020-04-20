@@ -161,7 +161,7 @@ module.exports = function (app, gestorBD) {
         }
     });
 
-    app.post("/api/autenticar/", function (req, res) {
+    app.post("/api/autentigvcar/", function (req, res) {
         let seguro = app.get("crypto").createHmac('sha256', app.get('clave')).update(req.body.password).digest('hex');
         let criterio = {
             email: req.body.email,
