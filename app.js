@@ -42,6 +42,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app, mongo);
 
+let gestor = require("./modules/gestor.js");
+gestor.init(gestorBD,swig);
+
 var routerUsuarioToken = express.Router();
 routerUsuarioToken.use(function (req, res, next) {
     // obtener el token, vía headers (opcionalmente GET y/o POST).
@@ -104,10 +107,10 @@ app.set('db', 'mongodb://admin:sdi@tiendamusica-shard-00-00-wotx7.mongodb.net:27
 app.set('clave', 'abcdefg');
 app.set('crypto', crypto);
 
-require("./routes/rusuarios.js")(app, swig, gestorBD);
+require("./routes/rusuarios.js")(app, swig, gestorBD,gestor);
 require("./routes/rhome.js")(app, swig, gestorBD);
-require("./routes/ramigos.js")(app, swig, gestorBD);
-require("./routes/rapi.js")(app, gestorBD);
+require("./routes/ramigos.js")(app, swig, gestorBD,gestor);
+require("./routes/rapi.js")(app, gestorBD,gestor);
 
 
 app.get('/', function (req, res) {
