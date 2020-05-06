@@ -1,4 +1,5 @@
 package com.uniovi.tests;
+
 //Paquetes Java
 import java.util.List;
 //Paquetes JUnit 
@@ -8,27 +9,26 @@ import static org.junit.Assert.assertTrue;
 //Paquetes Selenium 
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.support.ui.Sleeper;
+
+import com.uniovi.tests.util.Internationalization;
 //Paquetes Utilidades de Testing Propias
 import com.uniovi.tests.util.SeleniumUtils;
 //Paquetes con los Page Object
 import com.uniovi.tests.pageobjects.*;
 
-
 //Ordenamos las pruebas por el nombre del mÃ©todo
-@FixMethodOrder(MethodSorters.NAME_ASCENDING) 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NotaneitorTests {
-	//En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens automÃ¡ticas)):
-	//static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
-	//static String Geckdriver024 = "C:\\Path\\geckodriver024win64.exe";
-	//En MACOSX (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens automÃ¡ticas):
-	static String PathFirefox65 = "/Applications/Firefox 2.app/Contents/MacOS/firefox-bin";
-	//static String PathFirefox64 = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
-	static String Geckdriver024 = "/Users/delacal/Documents/SDI1718/firefox/geckodriver024mac";
-	//static String Geckdriver022 = "/Users/delacal/Documents/SDI1718/firefox/geckodriver023mac";
-	//ComÃºn a Windows y a MACOSX
-	static WebDriver driver = getDriver(PathFirefox65, Geckdriver024); 
-	static String URL = "https://localhost:8081";
 
+	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
+	// automáticas)):
+	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+	static String Geckdriver024 = "D:\\Jaime\\Repositorios\\sdi1920-entrega2-202-708\\sdi1920-entrega2-test-202-708\\geckodriver024win64.exe";
+
+	// Común a Windows y a MACOSX
+	static WebDriver driver = getDriver(PathFirefox65, Geckdriver024);
+	static String URL = "http://localhost:8081";
 
 	public static WebDriver getDriver(String PathFirefox, String Geckdriver) {
 		System.setProperty("webdriver.firefox.bin", PathFirefox);
@@ -37,206 +37,475 @@ public class NotaneitorTests {
 		return driver;
 	}
 
-
 	@Before
-	public void setUp(){
+	public void setUp() {
 		driver.navigate().to(URL);
 	}
+
 	@After
-	public void tearDown(){
+	public void tearDown() {
 		driver.manage().deleteAllCookies();
 	}
-	@BeforeClass 
+
+	@BeforeClass
 	static public void begin() {
-		//COnfiguramos las pruebas.
-		//Fijamos el timeout en cada opciÃ³n de carga de una vista. 2 segundos.
+		// COnfiguramos las pruebas.
+		// Fijamos el timeout en cada opciÃ³n de carga de una vista. 2 segundos.
 		PO_View.setTimeout(3);
 
 	}
+
 	@AfterClass
 	static public void end() {
-		//Cerramos el navegador al finalizar las pruebas
+		// Cerramos el navegador al finalizar las pruebas
 		driver.quit();
 	}
 
-	//PR01. Sin hacer /
+	/**
+	 * [Prueba1] Registro de Usuario con datos válidos.
+	 */
 	@Test
-	public void PR01() {
-		assertTrue("PR01 sin hacer", false);			
+	public void test01() {
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nuevo usuario registrado", 2);
+
+		SeleniumUtils.logout(driver);
 	}
 
-	//PR02. Sin hacer /
+	/**
+	 * [Prueba2] Registro de Usuario con datos inválidos (email vacío, nombre vacío,
+	 * apellidos vacíos).
+	 */
 	@Test
-	public void PR02() {
-		assertTrue("PR02 sin hacer", false);			
+	public void test02() {
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormRegister(driver, "", "Prueba2", "Prueba2", "123456", "123456");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
+
+		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "", "Prueba2", "123456", "123456");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
+
+		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "Prueba2", "", "123456", "123456");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
 	}
 
-	//PR03. Sin hacer /
+	/**
+	 * [Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña
+	 * inválida).
+	 */
 	@Test
-	public void PR03() {
-		assertTrue("PR03 sin hacer", false);			
-	}
-	
-	//PR04. Sin hacer /
-	@Test
-	public void PR04() {
-		assertTrue("PR04 sin hacer", false);			
-	}
-	
-	//PR05. Sin hacer /
-	@Test
-	public void PR05() {
-		assertTrue("PR05 sin hacer", false);			
-	}
-	
-	//PR06. Sin hacer /
-	@Test
-	public void PR06() {
-		assertTrue("PR06 sin hacer", false);			
-	}
-	
-	//PR07. Sin hacer /
-	@Test
-	public void PR07() {
-		assertTrue("PR07 sin hacer", false);			
-	}	
-	
-	//PR08. Sin hacer /
-	@Test
-	public void PR08() {
-		assertTrue("PR08 sin hacer", false);			
-	}	
-	
-	//PR09. Sin hacer /
-	@Test
-	public void PR09() {
-		assertTrue("PR09 sin hacer", false);			
-	}	
-	//PR10. Sin hacer /
-	@Test
-	public void PR10() {
-		assertTrue("PR10 sin hacer", false);			
-	}	
-	
-	//PR11. Sin hacer /
-	@Test
-	public void PR11() {
-		assertTrue("PR11 sin hacer", false);			
-	}	
-	
-	//PR12. Sin hacer /
-	@Test
-	public void PR12() {
-		assertTrue("PR12 sin hacer", false);			
-	}	
-	
-	//PR13. Sin hacer /
-	@Test
-	public void PR13() {
-		assertTrue("PR13 sin hacer", false);			
-	}	
-	
-	//PR14. Sin hacer /
-	@Test
-	public void PR14() {
-		assertTrue("PR14 sin hacer", false);			
-	}	
-	
-	//PR15. Sin hacer /
-	@Test
-	public void PR15() {
-		assertTrue("PR15 sin hacer", false);			
-	}	
-	
-	//PR16. Sin hacer /
-	@Test
-	public void PR16() {
-		assertTrue("PR16 sin hacer", false);			
-	}	
-	
-	//PR017. Sin hacer /
-	@Test
-	public void PR17() {
-		assertTrue("PR17 sin hacer", false);			
-	}	
-	
-	//PR18. Sin hacer /
-	@Test
-	public void PR18() {
-		assertTrue("PR18 sin hacer", false);			
-	}	
-	
-	//PR19. Sin hacer /
-	@Test
-	public void PR19() {
-		assertTrue("PR19 sin hacer", false);			
-	}	
-	
-	//P20. Sin hacer /
-	@Test
-	public void PR20() {
-		assertTrue("PR20 sin hacer", false);			
-	}	
-	
-	//PR21. Sin hacer /
-	@Test
-	public void PR21() {
-		assertTrue("PR21 sin hacer", false);			
-	}	
-	
-	//PR22. Sin hacer /
-	@Test
-	public void PR22() {
-		assertTrue("PR22 sin hacer", false);			
-	}	
-	
-	//PR23. Sin hacer /
-	@Test
-	public void PR23() {
-		assertTrue("PR23 sin hacer", false);			
-	}	
-	
-	//PR24. Sin hacer /
-	@Test
-	public void PR24() {
-		assertTrue("PR24 sin hacer", false);			
-	}	
-	//PR25. Sin hacer /
-	@Test
-	public void PR25() {
-		assertTrue("PR25 sin hacer", false);			
-	}	
-	
-	//PR26. Sin hacer /
-	@Test
-	public void PR26() {
-		assertTrue("PR26 sin hacer", false);			
-	}	
-	
-	//PR27. Sin hacer /
-	@Test
-	public void PR27() {
-		assertTrue("PR27 sin hacer", false);			
-	}	
-	
-	//PR029. Sin hacer /
-	@Test
-	public void PR29() {
-		assertTrue("PR29 sin hacer", false);			
+	public void test03() {
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormRegister(driver, "prueba3@prueba.com", "Prueba3", "Prueba3", "123456", "123457");
+
+		SeleniumUtils.checkKey(driver, "Error.signup.passwordConfirm.coincidence", Internationalization.getSPANISH());
 	}
 
-	//PR030. Sin hacer /
+	/**
+	 * [Prueba4] Registro de Usuario con datos inválidos (email existente).
+	 */
 	@Test
-	public void PR30() {
-		assertTrue("PR30 sin hacer", false);			
+	public void test04() {
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
+
+		SeleniumUtils.checkKey(driver, "Error.signup.email.duplicate", Internationalization.getSPANISH());
 	}
-	
-	//PR031. Sin hacer /
+
+	/**
+	 * [Prueba5] Inicio de sesión con datos válidos (administrador).
+	 */
 	@Test
-	public void PR31() {
-		assertTrue("PR31 sin hacer", false);			
+	public void test05() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+
+		SeleniumUtils.logout(driver);
 	}
-	
-		
+
+	/**
+	 * [Prueba6] Inicio de sesión con datos válidos (usuario estándar).
+	 */
+	@Test
+	public void test06() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como user", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba7] Inicio de sesión con datos inválidos (usuario estándar, campo email
+	 * y contraseña vacíos).
+	 */
+	@Test
+	public void test07() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "", "user");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+	}
+
+	/**
+	 * [Prueba8] Inicio de sesión con datos válidos (usuario estándar, email
+	 * existente, pero contraseña incorrecta).
+	 */
+	@Test
+	public void test08() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "wrongPassword");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+	}
+
+	/**
+	 * [Prueba9] Hacer click en la opción de salir de sesión y comprobar que se
+	 * redirige a la página de inicio de sesión (Login).
+	 */
+	@Test
+	public void test09() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba10] Comprobar que el botón cerrar sesión no está visible si el usuario
+	 * no está autenticado.
+	 */
+	@Test
+	public void test10() {
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", 2);
+	}
+
+	/**
+	 * [Prueba11] Mostrar el listado de usuarios y comprobar que se muestran todos
+	 * los que existen en el sistema.
+	 */
+	@Test
+	public void test11() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'user/list')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 4);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba12] Hacer una búsqueda con el campo vacío y comprobar que se muestra
+	 * la página que corresponde con el listado usuarios existentes en el sistema.
+	 */
+	@Test
+	public void test12() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 4);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba13] Hacer una búsqueda escribiendo en el campo un texto que no exista
+	 * y comprobar que se muestra la página que corresponde, con la lista de
+	 * usuarios vacía.
+	 */
+	@Test
+	public void test13() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "wrong");
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "wrong", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba14] Hacer una búsqueda con un texto específico y comprobar que se
+	 * muestra la página que corresponde, con la lista de usuarios en los que el
+	 * texto especificados sea parte de su nombre, apellidos o de su email.
+	 */
+	@Test
+	public void test14() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 3);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba15] Desde el listado de usuarios de la aplicación, enviar una
+	 * invitación de amistad a un usuario. Comprobar que la solicitud de amistad
+	 * aparece en el listado de invitaciones (punto siguiente).
+	 */
+	@Test
+	public void test15() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user2@email.com");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "text", "agregar amigo", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos.get(0).click();
+
+		SeleniumUtils.logout(driver);
+
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba16] Desde el listado de usuarios de la aplicación, enviar una
+	 * invitación de amistad a un usuario al que ya le habíamos enviado la
+	 * invitación previamente. No debería dejarnos enviar la invitación, se podría
+	 * ocultar el botón de enviar invitación o notificar que ya había sido enviada
+	 * previamente.
+	 */
+	@Test
+	public void test16() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user2@email.com");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "agregar amigo", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba17] Mostrar el listado de invitaciones de amistad recibidas. Comprobar
+	 * con un listado que contenga varias invitaciones recibidas.
+	 */
+	@Test
+	public void test17() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user3@email.com", "user3");
+
+		SeleniumUtils.searchUsers(driver, "user2@email.com");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "text", "agregar amigo", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos.get(0).click();
+
+		SeleniumUtils.logout(driver);
+
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba18] Sobre el listado de invitaciones recibidas. Hacer click en el
+	 * botón/enlace de una de ellas y comprobar que dicha solicitud desaparece del
+	 * listado de invitaciones.
+	 */
+	@Test
+	public void test18() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 2);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "@href", "friend/acept", 2);
+		assertTrue(elementos.size() == 2);
+		elementos.get(0).click();
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "User1", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba19] Mostrar el listado de amigos de un usuario. Comprobar que el
+	 * listado contiene los amigos que deben ser.
+	 */
+	@Test
+	public void test19() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/list')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.checkElement(driver, "text", "User1");
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba20] Visualizar al menos cuatro páginas en Español/Inglés/Español
+	 * (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+	 * Ejemplo, Página principal/Opciones Principales de Usuario/Listado de
+	 * Usuarios.
+	 */
+	@Test
+	public void test20() throws Exception {
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba21] Intentar acceder sin estar autenticado a la opción de listado de
+	 * usuarios. Se deberá volver al formulario de login.
+	 */
+	@Test
+	public void test21() throws Exception {
+		driver.get("http://localhost:8081/user/list");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
+	}
+
+	/**
+	 * [Prueba22] Intentar acceder sin estar autenticado a la opción de listado de
+	 * publicaciones de un usuario estándar. Se deberá volver al formulario de
+	 * login.
+	 */
+	@Test
+	public void test22() throws Exception {
+		driver.get("http://localhost:8081/friend/list");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
+	}
 }
-
