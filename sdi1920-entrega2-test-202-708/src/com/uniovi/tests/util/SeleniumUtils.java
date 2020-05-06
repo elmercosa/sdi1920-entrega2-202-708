@@ -176,4 +176,18 @@ public class SeleniumUtils {
 
 		checkElement(driver, "text", "You have been logged out successfully.");
 	}
+	
+	static public void fillFormLogin(WebDriver driver, String usernamep, String passwordp) {
+		WebElement username = driver.findElement(By.name("username"));
+		username.click();
+		username.clear();
+		username.sendKeys(usernamep);
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys(passwordp);
+		// Pulsar el boton de Alta.
+		By boton = By.className("btn");
+		driver.findElement(boton).click();
+	}
 }

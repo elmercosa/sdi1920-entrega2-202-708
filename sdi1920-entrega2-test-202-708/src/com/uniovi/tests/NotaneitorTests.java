@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 //Paquetes Selenium 
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.*;
+import org.openqa.selenium.support.ui.Sleeper;
 
 import com.uniovi.tests.util.Internationalization;
 //Paquetes Utilidades de Testing Propias
@@ -19,7 +20,7 @@ import com.uniovi.tests.pageobjects.*;
 //Ordenamos las pruebas por el nombre del mÃ©todo
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NotaneitorTests {
-	
+
 	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
 	// automáticas)):
 	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
@@ -60,21 +61,21 @@ public class NotaneitorTests {
 		driver.quit();
 	}
 
-	/*
+	/**
 	 * [Prueba1] Registro de Usuario con datos válidos.
 	 */
 	@Test
 	public void test01() {
 		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
-		
+
 		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
-		
+
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nuevo usuario registrado", 2);
-		
+
 		SeleniumUtils.logout(driver);
 	}
 
-	/*
+	/**
 	 * [Prueba2] Registro de Usuario con datos inválidos (email vacío, nombre vacío,
 	 * apellidos vacíos).
 	 */
@@ -95,7 +96,7 @@ public class NotaneitorTests {
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
 	}
 
-	/*
+	/**
 	 * [Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña
 	 * inválida).
 	 */
@@ -108,7 +109,7 @@ public class NotaneitorTests {
 		SeleniumUtils.checkKey(driver, "Error.signup.passwordConfirm.coincidence", Internationalization.getSPANISH());
 	}
 
-	/*
+	/**
 	 * [Prueba4] Registro de Usuario con datos inválidos (email existente).
 	 */
 	@Test
@@ -120,4 +121,61 @@ public class NotaneitorTests {
 		SeleniumUtils.checkKey(driver, "Error.signup.email.duplicate", Internationalization.getSPANISH());
 	}
 
+	/**
+	 * [Prueba5] Inicio de sesión con datos válidos (administrador).
+	 */
+	@Test
+	public void test05() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba6] Inicio de sesión con datos válidos (usuario estándar).
+	 */
+	@Test
+	public void test06() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como user", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba7] Inicio de sesión con datos inválidos (usuario estándar, campo email
+	 * y contraseña vacíos).
+	 */
+	@Test
+	public void test07() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "", "user");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+	}
+
+	/**
+	 * [Prueba8] Inicio de sesión con datos válidos (usuario estándar, email
+	 * existente, pero contraseña incorrecta).
+	 */
+	@Test
+	public void test08() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "wrongPassword");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+	}
 }
