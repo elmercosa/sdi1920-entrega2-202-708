@@ -379,4 +379,33 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
+	
+	/**
+	 * [Prueba18] Sobre el listado de invitaciones recibidas. Hacer click en el
+	 * botón/enlace de una de ellas y comprobar que dicha solicitud desaparece del
+	 * listado de invitaciones.
+	 */
+	@Test
+	public void test18() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 2);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "@href", "friend/acept", 2);
+		assertTrue(elementos.size() == 2);
+		elementos.get(0).click();
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "User1", 2);
+
+		SeleniumUtils.logout(driver);
+	}
 }
