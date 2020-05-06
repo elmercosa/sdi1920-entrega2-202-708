@@ -341,7 +341,7 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
-	
+
 	/**
 	 * [Prueba17] Mostrar el listado de invitaciones de amistad recibidas. Comprobar
 	 * con un listado que contenga varias invitaciones recibidas.
@@ -379,7 +379,7 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
-	
+
 	/**
 	 * [Prueba18] Sobre el listado de invitaciones recibidas. Hacer click en el
 	 * botón/enlace de una de ellas y comprobar que dicha solicitud desaparece del
@@ -405,6 +405,30 @@ public class NotaneitorTests {
 		elementos.get(0).click();
 
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "User1", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+	
+	/**
+	 * [Prueba19] Mostrar el listado de amigos de un usuario. Comprobar que el
+	 * listado contiene los amigos que deben ser.
+	 */
+	@Test
+	public void test19() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/list')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.checkElement(driver, "text", "User1");
 
 		SeleniumUtils.logout(driver);
 	}
