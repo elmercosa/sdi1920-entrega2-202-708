@@ -184,7 +184,7 @@ public class NotaneitorTests {
 	 * redirige a la página de inicio de sesión (Login).
 	 */
 	@Test
-	public void test09() throws Exception {
+	public void test09() {
 		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
@@ -199,7 +199,29 @@ public class NotaneitorTests {
 	 * no está autenticado.
 	 */
 	@Test
-	public void test10() throws Exception {
+	public void test10() {
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", 2);
+	}
+	
+	/**
+	 * [Prueba11] Mostrar el listado de usuarios y comprobar que se muestran todos
+	 * los que existen en el sistema.
+	 */
+	@Test
+	public void test11() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'user/list')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 4);
+
+		SeleniumUtils.logout(driver);
 	}
 }
