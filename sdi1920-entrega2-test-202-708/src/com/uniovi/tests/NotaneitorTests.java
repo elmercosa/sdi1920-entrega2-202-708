@@ -178,7 +178,7 @@ public class NotaneitorTests {
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
 	}
-	
+
 	/**
 	 * [Prueba9] Hacer click en la opción de salir de sesión y comprobar que se
 	 * redirige a la página de inicio de sesión (Login).
@@ -202,7 +202,7 @@ public class NotaneitorTests {
 	public void test10() {
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", 2);
 	}
-	
+
 	/**
 	 * [Prueba11] Mostrar el listado de usuarios y comprobar que se muestran todos
 	 * los que existen en el sistema.
@@ -224,7 +224,7 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
-	
+
 	/**
 	 * [Prueba12] Hacer una búsqueda con el campo vacío y comprobar que se muestra
 	 * la página que corresponde con el listado usuarios existentes en el sistema.
@@ -276,6 +276,68 @@ public class NotaneitorTests {
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 3);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba15] Desde el listado de usuarios de la aplicación, enviar una
+	 * invitación de amistad a un usuario. Comprobar que la solicitud de amistad
+	 * aparece en el listado de invitaciones (punto siguiente).
+	 */
+	@Test
+	public void test15() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user2@email.com");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "text", "agregar amigo", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos.get(0).click();
+
+		SeleniumUtils.logout(driver);
+
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba16] Desde el listado de usuarios de la aplicación, enviar una
+	 * invitación de amistad a un usuario al que ya le habíamos enviado la
+	 * invitación previamente. No debería dejarnos enviar la invitación, se podría
+	 * ocultar el botón de enviar invitación o notificar que ya había sido enviada
+	 * previamente.
+	 */
+	@Test
+	public void test16() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user2@email.com");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 1);
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "agregar amigo", 2);
 
 		SeleniumUtils.logout(driver);
 	}
