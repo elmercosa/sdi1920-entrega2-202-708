@@ -178,4 +178,28 @@ public class NotaneitorTests {
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
 	}
+	
+	/**
+	 * [Prueba9] Hacer click en la opción de salir de sesión y comprobar que se
+	 * redirige a la página de inicio de sesión (Login).
+	 */
+	@Test
+	public void test09() throws Exception {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba10] Comprobar que el botón cerrar sesión no está visible si el usuario
+	 * no está autenticado.
+	 */
+	@Test
+	public void test10() throws Exception {
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", 2);
+	}
 }
