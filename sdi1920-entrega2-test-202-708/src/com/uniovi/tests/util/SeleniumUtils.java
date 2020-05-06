@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumUtils {
 
-	protected static Internationalization p = new Internationalization("messages");
+	public static Internationalization p = new Internationalization("messages");
 	
 	/**
 	 * Aborta si el "texto" no está presente en la página actual
@@ -204,5 +204,13 @@ public class SeleniumUtils {
 		search.sendKeys(text);
 		By boton = By.className("btn");
 		driver.findElement(boton).click();
+	}
+	
+	static public void changeLanguage(WebDriver driver, String textLanguage) {
+		List<WebElement> elementos = EsperaCargaPagina(driver, "id", "btnLanguage", 2);
+		elementos.get(0).click();
+		elementos = EsperaCargaPagina(driver, "id", "languageDropdownMenuButton", 2);
+		elementos = EsperaCargaPagina(driver, "id", textLanguage, 2);
+		elementos.get(0).click();
 	}
 }

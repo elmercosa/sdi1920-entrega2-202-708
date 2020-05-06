@@ -408,7 +408,7 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
-	
+
 	/**
 	 * [Prueba19] Mostrar el listado de amigos de un usuario. Comprobar que el
 	 * listado contiene los amigos que deben ser.
@@ -431,5 +431,81 @@ public class NotaneitorTests {
 		SeleniumUtils.checkElement(driver, "text", "User1");
 
 		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba20] Visualizar al menos cuatro páginas en Español/Inglés/Español
+	 * (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+	 * Ejemplo, Página principal/Opciones Principales de Usuario/Listado de
+	 * Usuarios.
+	 */
+	@Test
+	public void test20() throws Exception {
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnEnglish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getENGLISH()), 2);
+		SeleniumUtils.changeLanguage(driver, "btnSpanish");
+		SeleniumUtils.EsperaCargaPagina(driver, "text",
+				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba21] Intentar acceder sin estar autenticado a la opción de listado de
+	 * usuarios. Se deberá volver al formulario de login.
+	 */
+	@Test
+	public void test21() throws Exception {
+		driver.get("http://localhost:8081/user/list");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
+	}
+
+	/**
+	 * [Prueba22] Intentar acceder sin estar autenticado a la opción de listado de
+	 * publicaciones de un usuario estándar. Se deberá volver al formulario de
+	 * login.
+	 */
+	@Test
+	public void test22() throws Exception {
+		driver.get("http://localhost:8081/friend/list");
+
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
 	}
 }
