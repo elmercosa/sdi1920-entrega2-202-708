@@ -224,4 +224,59 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 	}
+	
+	/**
+	 * [Prueba12] Hacer una búsqueda con el campo vacío y comprobar que se muestra
+	 * la página que corresponde con el listado usuarios existentes en el sistema.
+	 */
+	@Test
+	public void test12() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 4);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba13] Hacer una búsqueda escribiendo en el campo un texto que no exista
+	 * y comprobar que se muestra la página que corresponde, con la lista de
+	 * usuarios vacía.
+	 */
+	@Test
+	public void test13() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "wrong");
+
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "wrong", 2);
+
+		SeleniumUtils.logout(driver);
+	}
+
+	/**
+	 * [Prueba14] Hacer una búsqueda con un texto específico y comprobar que se
+	 * muestra la página que corresponde, con la lista de usuarios en los que el
+	 * texto especificados sea parte de su nombre, apellidos o de su email.
+	 */
+	@Test
+	public void test14() {
+		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+
+		SeleniumUtils.searchUsers(driver, "user");
+
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 3);
+
+		SeleniumUtils.logout(driver);
+	}
 }
