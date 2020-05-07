@@ -21,12 +21,12 @@ import com.uniovi.tests.pageobjects.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NotaneitorTests {
 
-	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
-	// automáticas)):
+	// En Windows (Debe ser la versiï¿½n 65.0.1 y desactivar las actualizacioens
+	// automï¿½ticas)):
 	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
 	static String Geckdriver024 = "D:\\Jaime\\Repositorios\\sdi1920-entrega2-202-708\\sdi1920-entrega2-test-202-708\\geckodriver024win64.exe";
 
-	// Común a Windows y a MACOSX
+	// Comï¿½n a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox65, Geckdriver024);
 	static String URL = "http://localhost:8081";
 
@@ -62,7 +62,7 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba1] Registro de Usuario con datos válidos.
+	 * [Prueba1] Registro de Usuario con datos vï¿½lidos.
 	 */
 	@Test
 	public void test01() {
@@ -76,8 +76,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba2] Registro de Usuario con datos inválidos (email vacío, nombre vacío,
-	 * apellidos vacíos).
+	 * [Prueba2] Registro de Usuario con datos invï¿½lidos (email vacï¿½o, nombre vacï¿½o,
+	 * apellidos vacï¿½os).
 	 */
 	@Test
 	public void test02() {
@@ -85,20 +85,20 @@ public class NotaneitorTests {
 
 		SeleniumUtils.fillFormRegister(driver, "", "Prueba2", "Prueba2", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regï¿½strate como usuario", 2);
 
 		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "", "Prueba2", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regï¿½strate como usuario", 2);
 
 		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "Prueba2", "", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regístrate como usuario", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Regï¿½strate como usuario", 2);
 	}
 
 	/**
-	 * [Prueba3] Registro de Usuario con datos inválidos (repetición de contraseña
-	 * inválida).
+	 * [Prueba3] Registro de Usuario con datos invï¿½lidos (repeticiï¿½n de contraseï¿½a
+	 * invï¿½lida).
 	 */
 	@Test
 	public void test03() {
@@ -110,7 +110,7 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba4] Registro de Usuario con datos inválidos (email existente).
+	 * [Prueba4] Registro de Usuario con datos invï¿½lidos (email existente).
 	 */
 	@Test
 	public void test04() {
@@ -122,7 +122,7 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba5] Inicio de sesión con datos válidos (administrador).
+	 * [Prueba5] Inicio de sesiï¿½n con datos vï¿½lidos (administrador).
 	 */
 	@Test
 	public void test05() {
@@ -130,13 +130,13 @@ public class NotaneitorTests {
 
 		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesiï¿½n como admin", 2);
 
 		SeleniumUtils.logout(driver);
 	}
 
 	/**
-	 * [Prueba6] Inicio de sesión con datos válidos (usuario estándar).
+	 * [Prueba6] Inicio de sesiï¿½n con datos vï¿½lidos (usuario estï¿½ndar).
 	 */
 	@Test
 	public void test06() {
@@ -144,14 +144,14 @@ public class NotaneitorTests {
 
 		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como user", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesiï¿½n como user", 2);
 
 		SeleniumUtils.logout(driver);
 	}
 
 	/**
-	 * [Prueba7] Inicio de sesión con datos inválidos (usuario estándar, campo email
-	 * y contraseña vacíos).
+	 * [Prueba7] Inicio de sesiï¿½n con datos invï¿½lidos (usuario estï¿½ndar, campo email
+	 * y contraseï¿½a vacï¿½os).
 	 */
 	@Test
 	public void test07() {
@@ -167,8 +167,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba8] Inicio de sesión con datos válidos (usuario estándar, email
-	 * existente, pero contraseña incorrecta).
+	 * [Prueba8] Inicio de sesiï¿½n con datos vï¿½lidos (usuario estï¿½ndar, email
+	 * existente, pero contraseï¿½a incorrecta).
 	 */
 	@Test
 	public void test08() {
@@ -180,8 +180,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba9] Hacer click en la opción de salir de sesión y comprobar que se
-	 * redirige a la página de inicio de sesión (Login).
+	 * [Prueba9] Hacer click en la opciï¿½n de salir de sesiï¿½n y comprobar que se
+	 * redirige a la pï¿½gina de inicio de sesiï¿½n (Login).
 	 */
 	@Test
 	public void test09() {
@@ -189,14 +189,14 @@ public class NotaneitorTests {
 
 		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesión como admin", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesiï¿½n como admin", 2);
 
 		SeleniumUtils.logout(driver);
 	}
 
 	/**
-	 * [Prueba10] Comprobar que el botón cerrar sesión no está visible si el usuario
-	 * no está autenticado.
+	 * [Prueba10] Comprobar que el botï¿½n cerrar sesiï¿½n no estï¿½ visible si el usuario
+	 * no estï¿½ autenticado.
 	 */
 	@Test
 	public void test10() {
@@ -226,8 +226,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba12] Hacer una búsqueda con el campo vacío y comprobar que se muestra
-	 * la página que corresponde con el listado usuarios existentes en el sistema.
+	 * [Prueba12] Hacer una bï¿½squeda con el campo vacï¿½o y comprobar que se muestra
+	 * la pï¿½gina que corresponde con el listado usuarios existentes en el sistema.
 	 */
 	@Test
 	public void test12() {
@@ -244,9 +244,9 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba13] Hacer una búsqueda escribiendo en el campo un texto que no exista
-	 * y comprobar que se muestra la página que corresponde, con la lista de
-	 * usuarios vacía.
+	 * [Prueba13] Hacer una bï¿½squeda escribiendo en el campo un texto que no exista
+	 * y comprobar que se muestra la pï¿½gina que corresponde, con la lista de
+	 * usuarios vacï¿½a.
 	 */
 	@Test
 	public void test13() {
@@ -262,8 +262,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba14] Hacer una búsqueda con un texto específico y comprobar que se
-	 * muestra la página que corresponde, con la lista de usuarios en los que el
+	 * [Prueba14] Hacer una bï¿½squeda con un texto especï¿½fico y comprobar que se
+	 * muestra la pï¿½gina que corresponde, con la lista de usuarios en los que el
 	 * texto especificados sea parte de su nombre, apellidos o de su email.
 	 */
 	@Test
@@ -281,8 +281,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba15] Desde el listado de usuarios de la aplicación, enviar una
-	 * invitación de amistad a un usuario. Comprobar que la solicitud de amistad
+	 * [Prueba15] Desde el listado de usuarios de la aplicaciï¿½n, enviar una
+	 * invitaciï¿½n de amistad a un usuario. Comprobar que la solicitud de amistad
 	 * aparece en el listado de invitaciones (punto siguiente).
 	 */
 	@Test
@@ -320,10 +320,10 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba16] Desde el listado de usuarios de la aplicación, enviar una
-	 * invitación de amistad a un usuario al que ya le habíamos enviado la
-	 * invitación previamente. No debería dejarnos enviar la invitación, se podría
-	 * ocultar el botón de enviar invitación o notificar que ya había sido enviada
+	 * [Prueba16] Desde el listado de usuarios de la aplicaciï¿½n, enviar una
+	 * invitaciï¿½n de amistad a un usuario al que ya le habï¿½amos enviado la
+	 * invitaciï¿½n previamente. No deberï¿½a dejarnos enviar la invitaciï¿½n, se podrï¿½a
+	 * ocultar el botï¿½n de enviar invitaciï¿½n o notificar que ya habï¿½a sido enviada
 	 * previamente.
 	 */
 	@Test
@@ -382,7 +382,7 @@ public class NotaneitorTests {
 
 	/**
 	 * [Prueba18] Sobre el listado de invitaciones recibidas. Hacer click en el
-	 * botón/enlace de una de ellas y comprobar que dicha solicitud desaparece del
+	 * botï¿½n/enlace de una de ellas y comprobar que dicha solicitud desaparece del
 	 * listado de invitaciones.
 	 */
 	@Test
@@ -434,9 +434,9 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba20] Visualizar al menos cuatro páginas en Español/Inglés/Español
+	 * [Prueba20] Visualizar al menos cuatro pï¿½ginas en Espaï¿½ol/Inglï¿½s/Espaï¿½ol
 	 * (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
-	 * Ejemplo, Página principal/Opciones Principales de Usuario/Listado de
+	 * Ejemplo, Pï¿½gina principal/Opciones Principales de Usuario/Listado de
 	 * Usuarios.
 	 */
 	@Test
@@ -487,8 +487,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba21] Intentar acceder sin estar autenticado a la opción de listado de
-	 * usuarios. Se deberá volver al formulario de login.
+	 * [Prueba21] Intentar acceder sin estar autenticado a la opciï¿½n de listado de
+	 * usuarios. Se deberï¿½ volver al formulario de login.
 	 */
 	@Test
 	public void test21() throws Exception {
@@ -498,8 +498,8 @@ public class NotaneitorTests {
 	}
 
 	/**
-	 * [Prueba22] Intentar acceder sin estar autenticado a la opción de listado de
-	 * publicaciones de un usuario estándar. Se deberá volver al formulario de
+	 * [Prueba22] Intentar acceder sin estar autenticado a la opciï¿½n de listado de
+	 * publicaciones de un usuario estï¿½ndar. Se deberï¿½ volver al formulario de
 	 * login.
 	 */
 	@Test
