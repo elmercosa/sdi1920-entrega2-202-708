@@ -144,8 +144,8 @@ public class SeleniumUtils {
 		assertTrue(elementos.size() == 1);
 	}
 
-	static public void fillFormRegister(WebDriver driver, String emailp, String namep, String lastnamep,
-			String passwordp, String passwordconfp) {
+	static public void fillFormRegister(WebDriver driver, String emailp, String namep, String surnamep,
+			String passwordp, String rpasswordp) {
 		WebElement email = driver.findElement(By.name("email"));
 		email.click();
 		email.clear();
@@ -154,34 +154,34 @@ public class SeleniumUtils {
 		name.click();
 		name.clear();
 		name.sendKeys(namep);
-		WebElement lastname = driver.findElement(By.name("lastName"));
-		lastname.click();
-		lastname.clear();
-		lastname.sendKeys(lastnamep);
+		WebElement surname = driver.findElement(By.name("surname"));
+		surname.click();
+		surname.clear();
+		surname.sendKeys(surnamep);
 		WebElement password = driver.findElement(By.name("password"));
 		password.click();
 		password.clear();
 		password.sendKeys(passwordp);
-		WebElement passwordConfirm = driver.findElement(By.name("passwordConfirm"));
-		passwordConfirm.click();
-		passwordConfirm.clear();
-		passwordConfirm.sendKeys(passwordconfp);
+		WebElement rpassword = driver.findElement(By.name("rpassword"));
+		rpassword.click();
+		rpassword.clear();
+		rpassword.sendKeys(rpasswordp);
 		// Pulsar el boton de Alta.
 		By boton = By.className("btn");
 		driver.findElement(boton).click();
 	}
 	
 	static public void logout(WebDriver driver) {
-		clickOption(driver, "logout", "text", "You have been logged out successfully.");
+		clickOption(driver, "/desconectarse", "text", "Bienvenido");
 
-		checkElement(driver, "text", "You have been logged out successfully.");
+		checkElement(driver, "text", "Bienvenido");
 	}
 	
-	static public void fillFormLogin(WebDriver driver, String usernamep, String passwordp) {
-		WebElement username = driver.findElement(By.name("username"));
-		username.click();
-		username.clear();
-		username.sendKeys(usernamep);
+	static public void fillFormLogin(WebDriver driver, String emailp, String passwordp) {
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys(emailp);
 		WebElement password = driver.findElement(By.name("password"));
 		password.click();
 		password.clear();
@@ -192,13 +192,10 @@ public class SeleniumUtils {
 	}
 	
 	static public void searchUsers(WebDriver driver, String text) {
-		List<WebElement> elementos = checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		List<WebElement> elementos = checkElement(driver, "free", "//a[contains(@href,'usuarios/lista')]");
 		elementos.get(0).click();
 
-		elementos = checkElement(driver, "free", "//a[contains(@href,'user/list')]");
-		elementos.get(0).click();
-
-		WebElement search = driver.findElement(By.name("searchText"));
+		WebElement search = driver.findElement(By.name("busqueda"));
 		search.click();
 		search.clear();
 		search.sendKeys(text);
