@@ -66,13 +66,11 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test01() {
-		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nuevo usuario registrado", 2);
-
-		SeleniumUtils.logout(driver);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
 
 	/**
@@ -81,19 +79,19 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test02() {
-		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "", "Prueba2", "Prueba2", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Reg�strate como usuario", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Registrar usuario");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "", "Prueba2", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Reg�strate como usuario", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Registrar usuario");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba2@prueba.com", "Prueba2", "", "123456", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Reg�strate como usuario", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Registrar usuario");
 	}
 
 	/**
@@ -102,11 +100,11 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test03() {
-		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba3@prueba.com", "Prueba3", "Prueba3", "123456", "123457");
 
-		SeleniumUtils.checkKey(driver, "Error.signup.passwordConfirm.coincidence", Internationalization.getSPANISH());
+		SeleniumUtils.textoPresentePagina(driver, "Las contraseñas no coinciden");
 	}
 
 	/**
@@ -114,69 +112,69 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test04() {
-		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
 
-		SeleniumUtils.checkKey(driver, "Error.signup.email.duplicate", Internationalization.getSPANISH());
+		SeleniumUtils.textoPresentePagina(driver,
+				"Ya está existe un usuario registrado con ese email. Por favor utilice otro");
 	}
 
 	/**
-	 * [Prueba5] Inicio de sesi�n con datos v�lidos (administrador).
+	 * [Prueba5] Inicio de sesi�n con datos v�lidos (usuario est�ndar).
 	 */
 	@Test
 	public void test05() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesi�n como admin", 2);
-
-		SeleniumUtils.logout(driver);
-	}
-
-	/**
-	 * [Prueba6] Inicio de sesi�n con datos v�lidos (usuario est�ndar).
-	 */
-	@Test
-	public void test06() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
-
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
-
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesi�n como user", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Lista de usuarios");
 
 		SeleniumUtils.logout(driver);
 	}
 
 	/**
-	 * [Prueba7] Inicio de sesi�n con datos inv�lidos (usuario est�ndar, campo email
+	 * [Prueba6] Inicio de sesi�n con datos inv�lidos (usuario est�ndar, campo email
 	 * y contrase�a vac�os).
 	 */
 	@Test
-	public void test07() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+	public void test06() {
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "", "user");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
 
 		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Identificación de usuario");
 	}
 
 	/**
-	 * [Prueba8] Inicio de sesi�n con datos v�lidos (usuario est�ndar, email
-	 * existente, pero contrase�a incorrecta).
+	 * [Prueba7] Inicio de sesión con datos inválidos (usuario estándar, email
+	 * existente, pero contraseña incorrecta).
+	 */
+	@Test
+	public void test07() {
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
+
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "wrongPassword");
+
+		SeleniumUtils.textoPresentePagina(driver, "Email o password incorrecto ");
+	}
+
+	/**
+	 * [Prueba8] Inicio de sesión con datos inválidos (usuario estándar, email no
+	 * existente y contraseña no vacía).
 	 */
 	@Test
 	public void test08() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "wrongPassword");
+		SeleniumUtils.fillFormLogin(driver, "prueba2@prueba.com", "wrongPassword");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Your username and password is invalid.", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Email o password incorrecto ");
 	}
 
 	/**
@@ -185,11 +183,11 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test09() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "admin@email.com", "admin");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Inicio de sesi�n como admin", 2);
+		SeleniumUtils.textoPresentePagina(driver, "Lista de usuarios");
 
 		SeleniumUtils.logout(driver);
 	}
@@ -209,18 +207,22 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test11() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
-		elementos.get(0).click();
-
-		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'user/list')]");
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free",
+				"//a[contains(@href,'usuarios/lista')]");
 		elementos.get(0).click();
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
-		assertTrue(elementos.size() == 4);
+		assertTrue(elementos.size() == 5);
+
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'usuarios/lista?pg=2')]");
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
+		assertTrue(elementos.size() == 5);
 
 		SeleniumUtils.logout(driver);
 	}
@@ -231,14 +233,14 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test12() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
 		SeleniumUtils.searchUsers(driver, "");
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
-		assertTrue(elementos.size() == 4);
+		assertTrue(elementos.size() == 5);
 
 		SeleniumUtils.logout(driver);
 	}
@@ -250,9 +252,9 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test13() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
 		SeleniumUtils.searchUsers(driver, "wrong");
 
@@ -268,14 +270,14 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test14() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		SeleniumUtils.searchUsers(driver, "user");
+		SeleniumUtils.searchUsers(driver, "Prueba");
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
-		assertTrue(elementos.size() == 3);
+		assertTrue(elementos.size() == 1);
 
 		SeleniumUtils.logout(driver);
 	}
@@ -287,11 +289,11 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test15() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		SeleniumUtils.searchUsers(driver, "user2@email.com");
+		SeleniumUtils.searchUsers(driver, "Jaime");
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 1);
@@ -301,16 +303,15 @@ public class NotaneitorTests {
 
 		elementos.get(0).click();
 
+		SeleniumUtils.textoPresentePagina(driver, "Peticion enviada ");
+
 		SeleniumUtils.logout(driver);
 
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
 
-		elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
-		elementos.get(0).click();
-
-		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'amigo/peticiones/lista')]");
 		elementos.get(0).click();
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
@@ -328,16 +329,21 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test16() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
+		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
 
-		SeleniumUtils.searchUsers(driver, "user2@email.com");
+		SeleniumUtils.searchUsers(driver, "Jaime");
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 1);
 
-		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "agregar amigo", 2);
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "text", "agregar amigo", 2);
+		assertTrue(elementos.size() == 1);
+
+		elementos.get(0).click();
+
+		SeleniumUtils.textoPresentePagina(driver, "Ya ha enviado una peticion de amistad a este usuario");
 
 		SeleniumUtils.logout(driver);
 	}
@@ -348,11 +354,11 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test17() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user3@email.com", "user3");
+		SeleniumUtils.fillFormLogin(driver, "peticion@peticion.com", "123456");
 
-		SeleniumUtils.searchUsers(driver, "user2@email.com");
+		SeleniumUtils.searchUsers(driver, "Jaime");
 
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 1);
@@ -364,14 +370,11 @@ public class NotaneitorTests {
 
 		SeleniumUtils.logout(driver);
 
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
 
-		elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
-		elementos.get(0).click();
-
-		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'amigo/peticiones/lista')]");
 		elementos.get(0).click();
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
@@ -387,25 +390,24 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test18() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
 
-		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
-		elementos.get(0).click();
-
-		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/request')]");
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free",
+				"//a[contains(@href,'amigo/peticiones/lista')]");
 		elementos.get(0).click();
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 2);
 
-		elementos = SeleniumUtils.EsperaCargaPagina(driver, "@href", "friend/acept", 2);
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "text", "aceptar", 2);
 		assertTrue(elementos.size() == 2);
-		elementos.get(0).click();
 
-		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "User1", 2);
-
+		elementos.get(1).click();
+		
+		SeleniumUtils.textoNoPresentePagina(driver, "Prueba1");
+		
 		SeleniumUtils.logout(driver);
 	}
 
@@ -415,97 +417,53 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void test19() {
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
+		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
-		SeleniumUtils.fillFormLogin(driver, "user2@email.com", "user2");
+		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
 
-		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
-		elementos.get(0).click();
-
-		elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'friend/list')]");
+		List<WebElement> elementos = SeleniumUtils.checkElement(driver, "free", "//a[contains(@href,'amigo/lista')]");
 		elementos.get(0).click();
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr", 2);
 		assertTrue(elementos.size() == 1);
 
-		SeleniumUtils.checkElement(driver, "text", "User1");
+		SeleniumUtils.textoPresentePagina(driver, "Prueba1");
 
 		SeleniumUtils.logout(driver);
 	}
 
 	/**
-	 * [Prueba20] Visualizar al menos cuatro p�ginas en Espa�ol/Ingl�s/Espa�ol
-	 * (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
-	 * Ejemplo, P�gina principal/Opciones Principales de Usuario/Listado de
-	 * Usuarios.
+	 * [Prueba20] Intentar acceder sin estar autenticado a la opción de listado de
+	 * usuarios. Se deberá volver al formulario de login.
 	 */
 	@Test
 	public void test20() throws Exception {
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnEnglish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("welcome.message", Internationalization.getENGLISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnSpanish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("welcome.message", Internationalization.getSPANISH()), 2);
+		driver.get("http://localhost:8081/usuarios/lista");
 
-		SeleniumUtils.clickOption(driver, "signup", "class", "btn btn-primary");
-
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnEnglish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("signup.message", Internationalization.getENGLISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnSpanish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("signup.message", Internationalization.getSPANISH()), 2);
-
-		SeleniumUtils.clickOption(driver, "login", "class", "btn btn-primary");
-
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnEnglish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("login.message", Internationalization.getENGLISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnSpanish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("login.message", Internationalization.getSPANISH()), 2);
-
-		SeleniumUtils.fillFormLogin(driver, "user1@email.com", "user1");
-
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnEnglish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getENGLISH()), 2);
-		SeleniumUtils.changeLanguage(driver, "btnSpanish");
-		SeleniumUtils.EsperaCargaPagina(driver, "text",
-				SeleniumUtils.p.getString("zona.privada.message", Internationalization.getSPANISH()), 2);
-
-		SeleniumUtils.logout(driver);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
 
 	/**
-	 * [Prueba21] Intentar acceder sin estar autenticado a la opci�n de listado de
-	 * usuarios. Se deber� volver al formulario de login.
+	 * [Prueba21] Intentar acceder sin estar autenticado a la opción de listado de
+	 * invitaciones de amistad recibida de un usuario estándar. Se deberá volver al
+	 * formulario de login.
 	 */
 	@Test
 	public void test21() throws Exception {
-		driver.get("http://localhost:8081/user/list");
+		driver.get("http://localhost:8081/amigo/peticiones/lista");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
 
 	/**
-	 * [Prueba22] Intentar acceder sin estar autenticado a la opci�n de listado de
-	 * publicaciones de un usuario est�ndar. Se deber� volver al formulario de
-	 * login.
+	 * [Prueba22] Intentar acceder estando autenticado como usuario standard a la
+	 * lista de amigos de otro usuario. Se deberá mostrar un mensaje de acción
+	 * indebida.
 	 */
 	@Test
 	public void test22() throws Exception {
-		driver.get("http://localhost:8081/friend/list");
+		driver.get("http://localhost:8081/amigo/lista");
 
-		SeleniumUtils.EsperaCargaPagina(driver, "text", "Nombre de usuario", 2);
+		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
 }
