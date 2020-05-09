@@ -85,7 +85,7 @@
 
     function leerMensajes(){
         for (i = 0; i < mensajes.length; i++) {
-            if(!mensajes[i].leido){
+            if(!mensajes[i].leido && mensajes[i].emisor === idAmigoSeleccionado){
                 leerMensaje(mensajes[i]._id);
             }
         }
@@ -102,10 +102,9 @@
                 "token": token
             },
             success: function (respuesta) {
-                console.log(respuesta);
             },
             error: function (error) {
-                $("#contenedor-principal").load("widget-chat.html");
+                $("#contenedor-principal").load("widget-login.html");
             }
         });
     }
