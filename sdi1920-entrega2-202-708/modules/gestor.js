@@ -81,10 +81,10 @@ module.exports = {
         };
         this.obtenerObjetos(criterioAmistad, 'amigos',
             function () {
-                success();
+                error();
             },
             function () {
-                error();
+                success();
             });
     }
 };

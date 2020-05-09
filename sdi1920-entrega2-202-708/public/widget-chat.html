@@ -1,10 +1,21 @@
 <div id="widget-chat">
     <div class="form-group">
+        <h2>Chat:</h2>
+    </div>
+    <div class="form-group">
         <table class="table table-hover">
             <tbody id="tablaCuerpo">
 
             </tbody>
         </table>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Mensaje:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="mensaje"
+                   placeholder="Escriba un mensaje" id="mensaje"/>
+            <button type="button" onclick="crearMensaje()" id="boton-mensaje">Enviar</button>
+        </div>
     </div>
 </div>
 
@@ -48,4 +59,26 @@
     }
 
     cargarMensajes();
+
+    function crearMensaje() {
+        $.ajax({
+            url : URLbase + "/amigos/nuevomensaje",
+            type : "POST",
+            data : {
+                destino: idAmigoSeleccionado,
+                texto: $("#mensaje").val()
+            },
+            dataType : 'json',
+            headers : {
+                "token" : token
+            },
+            success : function(respuesta) {
+                cargarMensajes();
+                $( "#mensaje" ).val('');
+            },
+            error : function(error) {
+                $( "#contenedor-principal" ).load("widget-chat.html");
+            }
+        });
+    }
 </script>

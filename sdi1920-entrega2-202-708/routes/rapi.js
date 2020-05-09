@@ -23,9 +23,7 @@ module.exports = function (app, gestorBD, gestor) {
         };
 
         gestor.obtenerObjetos(criterio, 'mensajes', function () {
-            console.log("usuario actual:", usuario_actual);
-            console.log("usuario amigo:", usuario_amigo);
-            errorjson(res, "Ha ocurrido un error");
+            successjson(res, []);
         }, function (objetos) {
             successjson(res, objetos);
         });
@@ -126,9 +124,10 @@ module.exports = function (app, gestorBD, gestor) {
         } else {
             gestor.comprobarAmistad(mensaje.destino, mensaje.emisor,
                 function () {
+                    console.log(mensaje);
                     errorjson(res, "No eres amigo del destino");
                 }, function () {
-                    gestor.insertarObjetos(mensaje, 'amigos', function () {
+                    gestor.insertarObjetos(mensaje, 'mensajes', function () {
                         errorjson(res);
                     }, function (id) {
                         res.status(201);
