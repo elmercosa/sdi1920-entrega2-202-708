@@ -34,7 +34,7 @@ module.exports = function (app, gestorBD, gestor) {
         let criterio = {$or: [{amigo1: usuario_actual}, {amigo2: usuario_actual}]};
 
         gestor.obtenerObjetos(criterio, 'amigos', function () {
-            errorjson(res, "Ha ocurrido un error");
+            successjson(res, []);
         }, function (objetos) {
             let amigos = [];
             for (let i = 0; i < objetos.length; i++) {
