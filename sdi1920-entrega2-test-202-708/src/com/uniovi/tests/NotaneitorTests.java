@@ -478,7 +478,7 @@ public class NotaneitorTests {
 	 */
 	@Test
 	public void PR23() {
-		driver.get(URL + "/amigo/lista");
+		driver.get(URL + "/cliente.html");
 
 	}
 
