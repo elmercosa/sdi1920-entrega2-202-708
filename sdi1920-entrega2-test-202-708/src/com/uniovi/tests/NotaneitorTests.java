@@ -411,9 +411,9 @@ public class NotaneitorTests {
 		assertTrue(elementos.size() == 2);
 
 		elementos.get(1).click();
-		
+
 		SeleniumUtils.textoNoPresentePagina(driver, "Prueba1");
-		
+
 		SeleniumUtils.logout(driver);
 	}
 
@@ -443,7 +443,7 @@ public class NotaneitorTests {
 	 * usuarios. Se deberá volver al formulario de login.
 	 */
 	@Test
-	public void PR20() throws Exception {
+	public void PR20() {
 		driver.get(URL + "/usuarios/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
@@ -455,7 +455,7 @@ public class NotaneitorTests {
 	 * formulario de login.
 	 */
 	@Test
-	public void PR21() throws Exception {
+	public void PR21() {
 		driver.get(URL + "/amigo/peticiones/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
@@ -467,9 +467,81 @@ public class NotaneitorTests {
 	 * indebida.
 	 */
 	@Test
-	public void PR22() throws Exception {
+	public void PR22() {
 		driver.get(URL + "/amigo/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
+	}
+
+	/**
+	 * [Prueba23] Inicio de sesión con datos válidos.
+	 */
+	@Test
+	public void PR23() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba24] Inicio de sesión con datos inválidos (usuario no existente en la
+	 * aplicación).
+	 */
+	@Test
+	public void PR24() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba25] Acceder a la lista de amigos de un usuario, que al menos tenga
+	 * tres amigos.
+	 */
+	@Test
+	public void PR25() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba26] Acceder a la lista de amigos de un usuario, y realizar un filtrado
+	 * para encontrar a un amigo concreto, el nombre a buscar debe coincidir con el
+	 * de un amigo.
+	 */
+	@Test
+	public void PR26() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba27] Acceder a la lista de mensajes de un amigo “chat”, la lista debe
+	 * contener al menos tres mensajes.
+	 */
+	@Test
+	public void PR27() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba28] Acceder a la lista de mensajes de un amigo “chat” y crear un nuevo
+	 * mensaje, validar que el mensaje aparece en la lista de mensajes.
+	 */
+	@Test
+	public void PR28() {
+		driver.get(URL + "/amigo/lista");
+
+	}
+
+	/**
+	 * [Prueba29] Identificarse en la aplicación y enviar un mensaje a un amigo,
+	 * validar que el mensaje enviado aparece en el chat. Identificarse después con
+	 * el usuario que recibido el mensaje y validar que tiene un mensaje sin leer,
+	 * entrar en el chat y comprobar que el mensaje pasa a tener el estado leído.
+	 */
+	@Test
+	public void PR29() {
+		driver.get(URL + "/amigo/lista");
+
 	}
 }
