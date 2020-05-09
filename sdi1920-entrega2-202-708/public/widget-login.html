@@ -35,7 +35,7 @@
                 console.log(respuesta.token);
                 token = respuesta.token;
                 Cookies.set('token', respuesta.token);
-                $("#contenedor-principal").load("widget-login.html");
+                $("#contenedor-principal").load("widget-amigos.html");
             },
             error: function (error) {
                 Cookies.remove('token');

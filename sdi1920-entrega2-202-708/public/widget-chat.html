@@ -1,0 +1,51 @@
+<div id="widget-chat">
+    <div class="form-group">
+        <table class="table table-hover">
+            <tbody id="tablaCuerpo">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    window.history.pushState("", "", "/cliente.html?w=mensajes");
+    var mensajes;
+
+    function cargarMensajes() {
+        $.ajax({
+            url : URLbase + "/amigos/conversacion/" + idAmigoSeleccionado ,
+            type : "GET",
+            data : {},
+            dataType : 'json',
+            headers : {
+                "token" : token
+            },
+            success : function(respuesta) {
+                mensajes = respuesta;
+                actualizarTabla(mensajes);
+            },
+            error : function(error) {
+                $( "#contenedor-principal" ).load("widget-amigos.html");
+            }
+        });
+    }
+
+    function actualizarTabla(mensajes){
+        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+        for (i = 0; i < mensajes.length; i++) {
+            $( "#tablaCuerpo" ).append(
+                "<tr id="+mensajes[i]._id+">"+
+                "<td>"
+                    +mensajes[i].emisor+":"+
+                    "<br>" +
+                    "&nbsp;&nbsp;&nbsp;&nbsp;" +mensajes[i].texto+
+                "</td>" +
+                "</tr>" );
+            // Mucho cuidado con las comillas del eliminarCancion
+            //la id tiene que ir entre comillas ' '
+        }
+    }
+
+    cargarMensajes();
+</script>

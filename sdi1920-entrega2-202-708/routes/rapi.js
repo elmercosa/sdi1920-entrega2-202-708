@@ -23,6 +23,8 @@ module.exports = function (app, gestorBD, gestor) {
         };
 
         gestor.obtenerObjetos(criterio, 'mensajes', function () {
+            console.log("usuario actual:", usuario_actual);
+            console.log("usuario amigo:", usuario_amigo);
             errorjson(res, "Ha ocurrido un error");
         }, function (objetos) {
             successjson(res, objetos);
@@ -32,6 +34,7 @@ module.exports = function (app, gestorBD, gestor) {
     app.get("/api/amigos/lista", function (req, res) {
         let usuario_actual = res.usuario;
         let criterio = {$or: [{amigo1: usuario_actual}, {amigo2: usuario_actual}]};
+
         gestor.obtenerObjetos(criterio, 'amigos', function () {
             errorjson(res, "Ha ocurrido un error");
         }, function (objetos) {
@@ -44,7 +47,15 @@ module.exports = function (app, gestorBD, gestor) {
                     amigos.push(objetos[i].amigo1)
                 }
             }
-            successjson(res, amigos);
+            let criterioBusqueda = {email: {$in: amigos}};
+            gestor.obtenerObjetos(criterioBusqueda, 'usuariosentrega2',
+                function () {
+                    errorjson(res, "Ha ocurrido un error");
+                },
+                function (objetos) {
+                    //console.log(objetos);
+                    successjson(res, objetos);
+                });
         });
     });
 
@@ -126,7 +137,6 @@ module.exports = function (app, gestorBD, gestor) {
                 });
         }
     });
-
 
     app.post("/api/autenticar/", function (req, res) {
         let seguro = app.get("crypto").createHmac('sha256', app.get('clave')).update(req.body.password).digest('hex');
