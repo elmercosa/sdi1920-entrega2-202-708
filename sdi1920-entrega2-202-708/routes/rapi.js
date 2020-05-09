@@ -48,7 +48,7 @@ module.exports = function (app, gestorBD, gestor) {
             let criterioBusqueda = {email: {$in: amigos}};
             gestor.obtenerObjetos(criterioBusqueda, 'usuariosentrega2',
                 function () {
-                    errorjson(res, "Ha ocurrido un error");
+                    successjson(res, []);
                 },
                 function (objetos) {
                     //console.log(objetos);
