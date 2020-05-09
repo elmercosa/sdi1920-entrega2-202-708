@@ -1,21 +1,27 @@
 package com.uniovi.tests;
 
+import static org.junit.Assert.assertTrue;
+
 //Paquetes Java
 import java.util.List;
-//Paquetes JUnit 
-import org.junit.*;
-import org.junit.runners.MethodSorters;
-import static org.junit.Assert.assertTrue;
-//Paquetes Selenium 
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.*;
-import org.openqa.selenium.support.ui.Sleeper;
 
-import com.uniovi.tests.util.Internationalization;
+//Paquetes JUnit 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+//Paquetes Selenium 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+//Paquetes con los Page Object
+import com.uniovi.tests.pageobjects.PO_View;
 //Paquetes Utilidades de Testing Propias
 import com.uniovi.tests.util.SeleniumUtils;
-//Paquetes con los Page Object
-import com.uniovi.tests.pageobjects.*;
 
 //Ordenamos las pruebas por el nombre del método
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -65,7 +71,7 @@ public class NotaneitorTests {
 	 * [Prueba1] Registro de Usuario con datos v�lidos.
 	 */
 	@Test
-	public void test01() {
+	public void PR01() {
 		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
@@ -78,7 +84,7 @@ public class NotaneitorTests {
 	 * apellidos vac�os).
 	 */
 	@Test
-	public void test02() {
+	public void PR02() {
 		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "", "Prueba2", "Prueba2", "123456", "123456");
@@ -99,7 +105,7 @@ public class NotaneitorTests {
 	 * inv�lida).
 	 */
 	@Test
-	public void test03() {
+	public void PR03() {
 		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba3@prueba.com", "Prueba3", "Prueba3", "123456", "123457");
@@ -111,7 +117,7 @@ public class NotaneitorTests {
 	 * [Prueba4] Registro de Usuario con datos inv�lidos (email existente).
 	 */
 	@Test
-	public void test04() {
+	public void PR04() {
 		SeleniumUtils.clickOption(driver, "/registrarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormRegister(driver, "prueba1@prueba.com", "Prueba1", "Prueba1", "123456", "123456");
@@ -124,7 +130,7 @@ public class NotaneitorTests {
 	 * [Prueba5] Inicio de sesi�n con datos v�lidos (usuario est�ndar).
 	 */
 	@Test
-	public void test05() {
+	public void PR05() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -139,7 +145,7 @@ public class NotaneitorTests {
 	 * y contrase�a vac�os).
 	 */
 	@Test
-	public void test06() {
+	public void PR06() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "", "user");
@@ -156,7 +162,7 @@ public class NotaneitorTests {
 	 * existente, pero contraseña incorrecta).
 	 */
 	@Test
-	public void test07() {
+	public void PR07() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "wrongPassword");
@@ -169,7 +175,7 @@ public class NotaneitorTests {
 	 * existente y contraseña no vacía).
 	 */
 	@Test
-	public void test08() {
+	public void PR08() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba2@prueba.com", "wrongPassword");
@@ -182,7 +188,7 @@ public class NotaneitorTests {
 	 * redirige a la p�gina de inicio de sesi�n (Login).
 	 */
 	@Test
-	public void test09() {
+	public void PR09() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -197,7 +203,7 @@ public class NotaneitorTests {
 	 * no est� autenticado.
 	 */
 	@Test
-	public void test10() {
+	public void PR10() {
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "Desconectar", 2);
 	}
 
@@ -206,7 +212,7 @@ public class NotaneitorTests {
 	 * los que existen en el sistema.
 	 */
 	@Test
-	public void test11() {
+	public void PR11() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -232,7 +238,7 @@ public class NotaneitorTests {
 	 * la p�gina que corresponde con el listado usuarios existentes en el sistema.
 	 */
 	@Test
-	public void test12() {
+	public void PR12() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -251,7 +257,7 @@ public class NotaneitorTests {
 	 * usuarios vac�a.
 	 */
 	@Test
-	public void test13() {
+	public void PR13() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -269,7 +275,7 @@ public class NotaneitorTests {
 	 * texto especificados sea parte de su nombre, apellidos o de su email.
 	 */
 	@Test
-	public void test14() {
+	public void PR14() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -288,7 +294,7 @@ public class NotaneitorTests {
 	 * aparece en el listado de invitaciones (punto siguiente).
 	 */
 	@Test
-	public void test15() {
+	public void PR15() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -328,7 +334,7 @@ public class NotaneitorTests {
 	 * previamente.
 	 */
 	@Test
-	public void test16() {
+	public void PR16() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "prueba1@prueba.com", "123456");
@@ -353,7 +359,7 @@ public class NotaneitorTests {
 	 * con un listado que contenga varias invitaciones recibidas.
 	 */
 	@Test
-	public void test17() {
+	public void PR17() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "peticion@peticion.com", "123456");
@@ -389,7 +395,7 @@ public class NotaneitorTests {
 	 * listado de invitaciones.
 	 */
 	@Test
-	public void test18() {
+	public void PR18() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
@@ -416,7 +422,7 @@ public class NotaneitorTests {
 	 * listado contiene los amigos que deben ser.
 	 */
 	@Test
-	public void test19() {
+	public void PR19() {
 		SeleniumUtils.clickOption(driver, "/identificarse", "class", "btn btn-primary");
 
 		SeleniumUtils.fillFormLogin(driver, "jaime@jaime.com", "123456");
@@ -437,8 +443,8 @@ public class NotaneitorTests {
 	 * usuarios. Se deberá volver al formulario de login.
 	 */
 	@Test
-	public void test20() throws Exception {
-		driver.get("http://localhost:8081/usuarios/lista");
+	public void PR20() throws Exception {
+		driver.get(URL + "/usuarios/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
@@ -449,8 +455,8 @@ public class NotaneitorTests {
 	 * formulario de login.
 	 */
 	@Test
-	public void test21() throws Exception {
-		driver.get("http://localhost:8081/amigo/peticiones/lista");
+	public void PR21() throws Exception {
+		driver.get(URL + "/amigo/peticiones/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
@@ -461,8 +467,8 @@ public class NotaneitorTests {
 	 * indebida.
 	 */
 	@Test
-	public void test22() throws Exception {
-		driver.get("http://localhost:8081/amigo/lista");
+	public void PR22() throws Exception {
+		driver.get(URL + "/amigo/lista");
 
 		SeleniumUtils.EsperaCargaPagina(driver, "text", "Identificación de usuario", 2);
 	}
