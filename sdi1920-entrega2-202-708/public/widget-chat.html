@@ -9,11 +9,12 @@
             </tbody>
         </table>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Mensaje:</label>
-        <div class="col-sm-10">
+    <div class="form-row">
+        <div class="col1">
             <input type="text" class="form-control" name="mensaje"
                    placeholder="Escriba un mensaje" id="mensaje"/>
+        </div>
+        <div class="col2">
             <button type="button" onclick="crearMensaje()" id="boton-mensaje">Enviar</button>
         </div>
     </div>
@@ -25,34 +26,34 @@
 
     function cargarMensajes() {
         $.ajax({
-            url : URLbase + "/amigos/conversacion/" + idAmigoSeleccionado ,
-            type : "GET",
-            data : {},
-            dataType : 'json',
-            headers : {
-                "token" : token
+            url: URLbase + "/amigos/conversacion/" + idAmigoSeleccionado,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": token
             },
-            success : function(respuesta) {
+            success: function (respuesta) {
                 mensajes = respuesta;
                 actualizarTabla(mensajes);
             },
-            error : function(error) {
-                $( "#contenedor-principal" ).load("widget-amigos.html");
+            error: function (error) {
+                $("#contenedor-principal").load("widget-amigos.html");
             }
         });
     }
 
-    function actualizarTabla(mensajes){
-        $( "#tablaCuerpo" ).empty(); // Vaciar la tabla
+    function actualizarTabla(mensajes) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < mensajes.length; i++) {
-            $( "#tablaCuerpo" ).append(
-                "<tr id="+mensajes[i]._id+">"+
+            $("#tablaCuerpo").append(
+                "<tr id=" + mensajes[i]._id + ">" +
                 "<td>"
-                    +mensajes[i].emisor+":"+
-                    "<br>" +
-                    "&nbsp;&nbsp;&nbsp;&nbsp;" +mensajes[i].texto+
+                + mensajes[i].emisor + (mensajes[i].leido ? "(leido)" : "(no leido)") + ":" +
+                "<br>" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;" + mensajes[i].texto +
                 "</td>" +
-                "</tr>" );
+                "</tr>");
             // Mucho cuidado con las comillas del eliminarCancion
             //la id tiene que ir entre comillas ' '
         }
@@ -62,23 +63,54 @@
 
     function crearMensaje() {
         $.ajax({
-            url : URLbase + "/amigos/nuevomensaje",
-            type : "POST",
-            data : {
+            url: URLbase + "/amigos/nuevomensaje",
+            type: "POST",
+            data: {
                 destino: idAmigoSeleccionado,
                 texto: $("#mensaje").val()
             },
-            dataType : 'json',
-            headers : {
-                "token" : token
+            dataType: 'json',
+            headers: {
+                "token": token
             },
-            success : function(respuesta) {
+            success: function (respuesta) {
                 cargarMensajes();
-                $( "#mensaje" ).val('');
+                $("#mensaje").val('');
             },
-            error : function(error) {
-                $( "#contenedor-principal" ).load("widget-chat.html");
+            error: function (error) {
+                $("#contenedor-principal").load("widget-chat.html");
             }
         });
     }
+
+    function leerMensajes(){
+        for (i = 0; i < mensajes.length; i++) {
+            if(!mensajes[i].leido){
+                leerMensaje(mensajes[i]._id);
+            }
+        }
+        cargarMensajes();
+    }
+
+    function leerMensaje(_id){
+        $.ajax({
+            url: URLbase + "/amigos/leermensaje/" + _id,
+            type: "PUT",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": token
+            },
+            success: function (respuesta) {
+                console.log(respuesta);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-chat.html");
+            }
+        });
+    }
+
+    setInterval(function () {
+        leerMensajes();
+    }, 1000);
 </script>

@@ -64,7 +64,6 @@ module.exports = function (app, gestorBD, gestor) {
         let mensaje = {leido: true};
 
         comprobarRepector(res, req, criterio, function () {
-
             gestorBD.modificarObjeto(criterio, 'mensajes', mensaje, function (result) {
                 if (result == null) {
                     res.status(500);
@@ -84,7 +83,7 @@ module.exports = function (app, gestorBD, gestor) {
 
     function comprobarRepector(res, req, mensajeId, callback) {
 
-        gestor.obtenerObjetos(mensajeId, 'mensaje', function () {
+        gestor.obtenerObjetos(mensajeId, 'mensajes', function () {
             errorjson(res, "No hay mensajes")
         }, function (objetos) {
             if (objetos[0].destino !== res.usuario) {
