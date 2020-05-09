@@ -109,7 +109,11 @@
         });
     }
 
-    setInterval(function () {
+    var cargar = setInterval(function () {
         leerMensajes();
     }, 1000);
+
+    function parar() {
+        clearInterval(cargar);
+    }
 </script>
