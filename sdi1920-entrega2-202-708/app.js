@@ -84,20 +84,18 @@ app.use('/api/amigos/*', routerUsuarioToken);
 let routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function (req, res, next) {
     console.log("routerUsuarioSession");
+    console.log("va a : " + req.session.destino)
     if (req.session.usuario) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : " + req.session.destino)
         res.redirect("/identificarse");
     }
 });
 
 //Aplicar routerUsuarioSession
-app.use("/compras", routerUsuarioSession);
 app.use("/amigo/*", routerUsuarioSession);
 app.use("/usuarios/lista", routerUsuarioSession);
-
 
 app.use(express.static('public'));
 
