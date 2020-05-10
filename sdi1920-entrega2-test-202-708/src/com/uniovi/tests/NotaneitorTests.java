@@ -296,7 +296,9 @@ public class NotaneitorTests {
 		SeleniumUtils.searchUsers(driver, "wrong");
 
 		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "wrong", 2);
-
+		
+		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "user", 2);
+		
 		SeleniumUtils.logout(driver);
 	}
 
