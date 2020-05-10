@@ -20,7 +20,8 @@ module.exports = function (app, swig, gestorBD, gestor) {
                     logged: req.session.usuario,
                     usuarios: objetos,
                     paginas: paginas,
-                    actual: pg
+                    actual: pg,
+                    busqueda: req.query.busqueda
                 });
             res.send(respuesta);
         });
