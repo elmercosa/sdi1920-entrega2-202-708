@@ -80,15 +80,20 @@ routerUsuarioToken.use(function (req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/amigos/*', routerUsuarioToken);
 
+//Logger
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function (req, res, next) {
     console.log("routerUsuarioSession");
-    console.log("va a : " + req.session.destino)
     if (req.session.usuario) {
-        // dejamos correr la petición
+        logger.info("USUARIO: " + req.session.usuario + " - ACCEDE A " + req.originalUrl);
         next();
     } else {
+        logger.error("[SIN AUTORIZACION] INTENTO DE ACCESO A " + req.originalUrl);
         res.redirect("/identificarse");
     }
 });
