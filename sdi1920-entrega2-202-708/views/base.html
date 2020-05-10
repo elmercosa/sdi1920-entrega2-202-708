@@ -32,8 +32,10 @@
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                {% if logged == null %}
                 <li><a href="/registrarse"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
                 <li id="signup"><a href="/identificarse"><span class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
+                {% endif %}
                 {% if logged != null %}
                 <li id="log_out"><a href="/desconectarse"><span class="glyphicon glyphicon-log-out"></span>Desconectarse</a>
                 </li>

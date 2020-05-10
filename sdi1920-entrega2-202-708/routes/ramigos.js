@@ -8,8 +8,6 @@ module.exports = function (app, swig, gestorBD, gestor) {
             let criterio = {to: friendEmail, from: req.session.usuario};
             gestor.comprobarAmistad(friendEmail, req.session.usuario,
                 function () {
-                    res.redirect("/usuarios/lista?mensaje=Ya eres amigo de este usuario&tipoMensaje=alert-danger ");
-                }, function () {
                     gestor.obtenerObjetos(criterio, 'peticionesamistad',
                         function () {
                             let peticion = {
@@ -24,10 +22,11 @@ module.exports = function (app, swig, gestorBD, gestor) {
                         }, function (objetos) {
                             res.redirect("/usuarios/lista?mensaje=Ya ha enviado una peticion de amistad a este usuario&tipoMensaje=alert-danger ");
                         });
+                }, function () {
+                    res.redirect("/usuarios/lista?mensaje=Ya eres amigo de este usuario&tipoMensaje=alert-danger ");
                 });
         }
     });
-
 
     app.get("/amigo/peticiones/lista", function (req, res) {
 
